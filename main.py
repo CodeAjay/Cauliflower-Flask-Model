@@ -1,13 +1,28 @@
 from flask import Flask, request, jsonify
 import numpy as np
+from flask_cors import CORS
 import tensorflow as tf
 import cv2
+from modelsummary import generate_model_summary
+
 
 app = Flask(__name__)
+CORS(app)
 
 # Load the trained Keras model
-model = tf.keras.models.load_model('trained_model.keras')
+model = tf.keras.models.load_model('trained_model_m.keras')
 class_names = ['Bacterial spot rot', 'Black Rot', 'Disease Free', 'Downy Mildew']
+
+@app.route('/model_summary', methods=['GET'])
+def get_model_summary():
+    # Generate the model summary
+    summary = generate_model_summary()  # Assuming you have a function to generate the summary
+    
+    # Ensure that summary is a list of strings
+    if not isinstance(summary, list):
+        return jsonify({'error': 'Model summary is not in the expected format'}), 500
+    
+    return jsonify({'summary': summary})
 
 @app.route('/predict', methods=['POST'])
 def predict():
