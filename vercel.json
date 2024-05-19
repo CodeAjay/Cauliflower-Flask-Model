@@ -4,7 +4,7 @@
         {
             "src": "./index.py",
             "use": "@vercel/python",
-            "fonfig": {"runtime": "python3.6"}
+            "config": {"runtime": "python3.6"}
         }
     ],
     "routes": [
